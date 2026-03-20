@@ -1,6 +1,6 @@
-package com.example.scheduler.repository;
+package com.scheduler.repository;
 
-import com.example.scheduler.model.Task;
+import com.scheduler.model.Task;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 /**

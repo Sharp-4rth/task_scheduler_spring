@@ -1,7 +1,7 @@
-package com.example.scheduler.controller;
+package com.scheduler.controller;
 
-import com.example.scheduler.model.Task;
-import com.example.scheduler.service.TaskService;
+import com.scheduler.model.Task;
+import com.scheduler.service.TaskService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -32,6 +32,11 @@ public class TaskController {
      * GET /tasks
      * Returns all tasks.
      */
+    @GetMapping("/{id}")
+    public Task getTaskById(@PathVariable Long id) {
+        return taskService.getTaskById(id);
+    }
+
     @GetMapping
     public List<Task> getAllTasks() {
         return taskService.getAllTasks();
@@ -41,4 +46,5 @@ public class TaskController {
     public List<Task> scheduleTasks() {       // No need for input uses existing tasks
         return taskService.scheduleTasks();   // No Logic in controller! just calls service
     }
+
 }

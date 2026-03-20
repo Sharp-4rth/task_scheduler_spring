@@ -1,7 +1,7 @@
-package com.example.scheduler.service;
+package com.scheduler.service;
 
-import com.example.scheduler.model.Task;
-import com.example.scheduler.repository.TaskRepository;
+import com.scheduler.model.Task;
+import com.scheduler.repository.TaskRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -33,6 +33,14 @@ public class TaskService {
         return taskRepository.findAll();
     }
 
+    /**
+     * Returns a task by id.
+     */
+    public Task getTaskById(Long id) {
+        return taskRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Task not found")); // HTTP 404
+    }
+
     public List<Task> scheduleTasks() {
         List<Task> tasks = taskRepository.findAll();
 
@@ -40,7 +48,7 @@ public class TaskService {
         tasks.sort((a, b) -> b.getPriority() - a.getPriority());
 
         // Step 2: greedy selection
-        int maxTime = 8; // Maybe revist this and tweak it
+        int maxTime = 8; // Maybe revisit this and tweak it
         int currentTime = 0;
 
         List<Task> scheduledTasks = new ArrayList<>();
