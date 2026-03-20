@@ -4,6 +4,7 @@ import com.example.scheduler.model.Task;
 import com.example.scheduler.repository.TaskRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -30,5 +31,27 @@ public class TaskService {
      */
     public List<Task> getAllTasks() {
         return taskRepository.findAll();
+    }
+
+    public List<Task> scheduleTasks() {
+        List<Task> tasks = taskRepository.findAll();
+
+        // Step 1: sort by priority (descending)
+        tasks.sort((a, b) -> b.getPriority() - a.getPriority());
+
+        // Step 2: greedy selection
+        int maxTime = 8; // Maybe revist this and tweak it
+        int currentTime = 0;
+
+        List<Task> scheduledTasks = new ArrayList<>();
+
+        for (Task task : tasks) {
+            if (currentTime + task.getDuration() <= maxTime) {
+                scheduledTasks.add(task);
+                currentTime += task.getDuration();
+            }
+        }
+
+        return scheduledTasks;
     }
 }

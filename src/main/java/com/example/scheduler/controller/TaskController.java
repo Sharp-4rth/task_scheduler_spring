@@ -36,4 +36,9 @@ public class TaskController {
     public List<Task> getAllTasks() {
         return taskService.getAllTasks();
     }
+
+    @PostMapping("/schedule")
+    public List<Task> scheduleTasks() {       // No need for input uses existing tasks
+        return taskService.scheduleTasks();   // No Logic in controller! just calls service
+    }
 }
