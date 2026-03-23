@@ -6,6 +6,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.ArrayList;
 import java.util.Optional;
@@ -56,19 +57,19 @@ class TaskServiceTest {
     }
 
     @Test
-    @DisplayName("Given task id does not exist, throw RuntimeException")
-    void givenTaskIdDoesNotExist_throwsRuntimeException() {
+    @DisplayName("Given task id does not exist, throw NotFoundException")
+    void givenTaskIdDoesNotExist_throwsNotFoundException() {
 
         Long id = 999L;
 
         Mockito.when(mockRepository.findById(id))
                 .thenReturn(Optional.empty());
 
-        RuntimeException exception = assertThrows(RuntimeException.class, () -> {
+        ResponseStatusException exception = assertThrows(ResponseStatusException.class, () -> {
             sut.getTaskById(id);
         });
 
-        assertEquals("Task not found", exception.getMessage());
+        assertEquals("Task not found", exception.getReason());
     }
 
     @Test
