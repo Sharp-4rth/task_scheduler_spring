@@ -1,6 +1,6 @@
 package com.scheduler.dtos;
 
-import com.scheduler.model.Task;
+import com.scheduler.models.Task;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 

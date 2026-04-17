@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-// IOC container?
 @RestController
 @RequestMapping("/tasks")
 public class TaskController {
@@ -30,6 +29,8 @@ public class TaskController {
     public List<TaskDTO> getAllTasks() {
         return taskService.getAllTasks();
     }
+
+    // get task by name
 
     @Operation(summary = "Get specific task", description = "Retrieve a task by id")
     @GetMapping("/{id}")

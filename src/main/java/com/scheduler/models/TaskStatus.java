@@ -1,4 +1,4 @@
-package com.scheduler.model;
+package com.scheduler.models;
 
 public enum TaskStatus {
     PENDING,

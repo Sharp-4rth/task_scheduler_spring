@@ -1,4 +1,4 @@
-package com.scheduler.model;
+package com.scheduler.models;
 
 import jakarta.persistence.*;
 
@@ -15,8 +15,13 @@ public class Task {
     private int duration;
     private int priority;
     private LocalDateTime deadline;
+
     @Enumerated(EnumType.STRING)
     private TaskStatus status;
+
+    @ManyToOne       // <--- foreign key
+    @JoinColumn(name = "user_id")
+    private User user;
 
     // Empty, Spring/ JPA creates objects behind the scenes
     public Task() {}
@@ -27,6 +32,14 @@ public class Task {
         this.priority = priority;
         this.deadline = deadline;
         this.status = TaskStatus.PENDING;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public User getUser() {
+        return user;
     }
 
     public Long getId() {

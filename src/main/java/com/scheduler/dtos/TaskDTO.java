@@ -1,7 +1,7 @@
 package com.scheduler.dtos;
 
 import java.time.LocalDateTime;
-import com.scheduler.model.TaskStatus;
+import com.scheduler.models.TaskStatus;
 
 public class TaskDTO {
 
@@ -21,6 +21,8 @@ public class TaskDTO {
         this.deadline = deadline;
         this.status = status;
     }
+
+
 
     public Long getId() {
         return id;

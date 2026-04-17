@@ -1,43 +1,75 @@
-//package com.scheduler.service;
-//
-//import com.scheduler.model.Task;
-//import com.scheduler.repository.TaskRepository;
-//import org.junit.jupiter.api.BeforeEach;
-//import org.junit.jupiter.api.DisplayName;
-//import org.junit.jupiter.api.Test;
-//import org.mockito.Mockito;
-//import org.springframework.web.server.ResponseStatusException;
-//
-//import java.util.ArrayList;
-//import java.util.Optional;
-//
-//import java.util.List;
-//
-//import static org.junit.jupiter.api.Assertions.*;
-//
-//class TaskServiceTest {
-//
-//    private TaskRepository mockRepository;
-//    private TaskService sut;
-//
-//    @BeforeEach
-//    void setUp() {
-//        mockRepository = Mockito.mock(TaskRepository.class);
-//        sut = new TaskService(mockRepository);
-//    }
-//
-//    @Test
-//    void shouldCreateTask() {
-//        Task task = new Task();
-//        task.setName("Test Task");
-//
-//        Mockito.when(mockRepository.save(task)).thenReturn(task);
-//
-//        Task savedTask = sut.createTask(task);
-//
-//        assertNotNull(savedTask);
-//        assertEquals("Test Task", savedTask.getName());
-//    }
+package com.scheduler.service;
+
+import com.scheduler.dtos.CreateTaskRequest;
+import com.scheduler.dtos.TaskDTO;
+import com.scheduler.dtos.TaskMapper;
+import com.scheduler.models.Task;
+import com.scheduler.models.TaskStatus;
+import com.scheduler.models.User;
+import com.scheduler.repository.TaskRepository;
+import com.scheduler.repository.UserRepository;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
+import org.springframework.web.server.ResponseStatusException;
+
+import java.util.ArrayList;
+import java.util.Optional;
+
+import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.when;
+
+class TaskServiceTest {
+
+    private TaskRepository mockRepository;
+    private TaskMapper taskMapper;
+    private UserRepository userRepository;
+    private TaskService sut;
+
+    @BeforeEach
+    void setUp() {
+        mockRepository = Mockito.mock(TaskRepository.class);
+        taskMapper = Mockito.mock(TaskMapper.class);
+        userRepository = Mockito.mock(UserRepository.class);
+        sut = new TaskService(mockRepository, taskMapper, userRepository);
+    }
+
+    @Test
+    void shouldCreateTask() {
+
+        // Arrange
+        CreateTaskRequest request = new CreateTaskRequest();
+        request.setName("Test Task");
+        request.setUserId(1L);
+
+        Task task = new Task();
+        task.setName("Test Task");
+
+        User user = new User();
+        user.setId(1L);
+
+        Task savedTask = new Task();
+        savedTask.setName("Test Task");
+
+        TaskDTO responseDTO = new TaskDTO(
+                1L, "Test Task", 0, 0, null, TaskStatus.PENDING
+        );
+
+        // Mock behavior
+        when(taskMapper.toEntity(request)).thenReturn(task);
+        when(userRepository.findById(1L)).thenReturn(Optional.of(user));
+        when(mockRepository.save(task)).thenReturn(savedTask);
+        when(taskMapper.toDTO(savedTask)).thenReturn(responseDTO);
+
+        // Act
+        TaskDTO result = sut.createTask(request);
+
+        // Assert
+        assertEquals("Test Task", result.getName());
+    }
 //
 //    @Test
 //    void shouldReturnAllTasks() {
@@ -49,7 +81,7 @@
 //
 //        List<Task> mockTasks = List.of(task1, task2);
 //
-//        Mockito.when(mockRepository.findAll()).thenReturn(mockTasks);
+//        when(mockRepository.findAll()).thenReturn(mockTasks);
 //
 //        List<Task> tasks = sut.getAllTasks();
 //
@@ -62,7 +94,7 @@
 //
 //        Long id = 999L;
 //
-//        Mockito.when(mockRepository.findById(id))
+//        when(mockRepository.findById(id))
 //                .thenReturn(Optional.empty());
 //
 //        ResponseStatusException exception = assertThrows(ResponseStatusException.class, () -> {
@@ -91,7 +123,7 @@
 //
 //        ArrayList<Task> mockTasks = new ArrayList<>(List.of(task1, task2, task3));
 //
-//        Mockito.when(mockRepository.findAll()).thenReturn(mockTasks);
+//        when(mockRepository.findAll()).thenReturn(mockTasks);
 //
 //        List<Task> result = sut.scheduleTasks();
 //
@@ -100,4 +132,4 @@
 //        assertTrue(result.contains(task1));
 //        assertTrue(result.contains(task3));
 //    }
-//}
+}
