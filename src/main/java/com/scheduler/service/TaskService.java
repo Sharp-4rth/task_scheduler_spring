@@ -9,6 +9,8 @@ import com.scheduler.models.User;
 import com.scheduler.repository.TaskRepository;
 import com.scheduler.repository.UserRepository;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -29,18 +31,26 @@ public class TaskService {
         this.userRepository = userRepository;
     }
 
+    private User getCurrentUser() {
+        String username = SecurityContextHolder
+                .getContext()
+                .getAuthentication()
+                .getName();
+
+        return userRepository.findByUsername(username)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+    }
+
     public TaskDTO createTask(CreateTaskRequest dto) {
 
         // DTO → Entity
         Task task = taskMapper.toEntity(dto);
 
-        // Get user
-        User user = userRepository.findById(dto.getUserId())
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found"));
-        task.setStatus(TaskStatus.PENDING);
+        User user = getCurrentUser();
 
-        // Set relationship
-        user.addTask(task);
+        Long userId = user.getId();
+
+        task.setUser(user);
 
         // Save (save() returns an entity)
         Task saved = taskRepository.save(task);
@@ -49,39 +59,48 @@ public class TaskService {
         return taskMapper.toDTO(saved);
     }
 
-
     public List<TaskDTO> getAllTasks() {
-        return taskRepository.findAll()
+        User user = getCurrentUser();
+
+        return taskRepository.findByUser(user)
                 .stream()
                 .map(taskMapper::toDTO)
                 .toList();
     }
 
+    public List<TaskDTO> getTasks() {
+        User user = getCurrentUser();
 
-    public List<TaskDTO> getTasksByUser(Long userId) {
-        return taskRepository.findByUserId(userId)
+        return user.getTasks()
                 .stream()
                 .map(taskMapper::toDTO)
                 .toList();
     }
 
     public List<TaskDTO> getTaskByName(String name) {
-        return taskRepository.findByName(name)
-                .stream()
+        User user = getCurrentUser();
+
+        List<Task> tasks = taskRepository.findByNameAndUser(name, user);
+
+        return tasks.stream()
                 .map(taskMapper::toDTO)
                 .toList();
     }
 
     public TaskDTO getTaskById(Long id) {
-        Task task = taskRepository.findById(id)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Task not found"));
 
+        User user = getCurrentUser();
+
+        Task task = taskRepository.findByIdAndUser(id, user)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
         return taskMapper.toDTO(task);
+
     }
 
     public List<TaskDTO> scheduleTasks() {
+        User user = getCurrentUser();
 
-        List<Task> tasks = taskRepository.findAll();
+        List<Task> tasks = user.getTasks();
 
         // sort by priority (descending)
         tasks.sort((a, b) -> b.getPriority() - a.getPriority());

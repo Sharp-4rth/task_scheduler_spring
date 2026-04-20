@@ -11,7 +11,6 @@ public class CreateTaskRequest {
     private int duration;
     private int priority;
     private LocalDateTime deadline;
-    private Long userId;
 
     public CreateTaskRequest() {}
 
@@ -19,16 +18,8 @@ public class CreateTaskRequest {
         return name;
     }
 
-    public Long getUserId() {
-        return userId;
-    }
-
     public void setName(String name) {
         this.name = name;
-    }
-
-    public void setUserId(Long userId) {
-        this.userId = userId;
     }
 
     public int getDuration() {
