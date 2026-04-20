@@ -4,7 +4,6 @@ import com.scheduler.dtos.CreateTaskRequest;
 import com.scheduler.dtos.TaskDTO;
 import com.scheduler.dtos.TaskMapper;
 import com.scheduler.models.Task;
-import com.scheduler.models.TaskStatus;
 import com.scheduler.models.User;
 import com.scheduler.repository.TaskRepository;
 import com.scheduler.repository.UserRepository;
@@ -32,13 +31,17 @@ public class TaskService {
     }
 
     private User getCurrentUser() {
-        String username = SecurityContextHolder
+        Authentication auth = SecurityContextHolder
                 .getContext()
-                .getAuthentication()
-                .getName();
+                .getAuthentication();
+
+        if (auth == null || !auth.isAuthenticated()) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "User not authenticated");
+        }
+        String username = auth.getName();
 
         return userRepository.findByUsername(username)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found"));
     }
 
     public TaskDTO createTask(CreateTaskRequest dto) {
@@ -47,8 +50,6 @@ public class TaskService {
         Task task = taskMapper.toEntity(dto);
 
         User user = getCurrentUser();
-
-        Long userId = user.getId();
 
         task.setUser(user);
 
@@ -63,15 +64,6 @@ public class TaskService {
         User user = getCurrentUser();
 
         return taskRepository.findByUser(user)
-                .stream()
-                .map(taskMapper::toDTO)
-                .toList();
-    }
-
-    public List<TaskDTO> getTasks() {
-        User user = getCurrentUser();
-
-        return user.getTasks()
                 .stream()
                 .map(taskMapper::toDTO)
                 .toList();
@@ -92,7 +84,7 @@ public class TaskService {
         User user = getCurrentUser();
 
         Task task = taskRepository.findByIdAndUser(id, user)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found"));
         return taskMapper.toDTO(task);
 
     }
@@ -100,10 +92,10 @@ public class TaskService {
     public List<TaskDTO> scheduleTasks() {
         User user = getCurrentUser();
 
-        List<Task> tasks = user.getTasks();
+        List<Task> tasks = new ArrayList<>(user.getTasks()); // create new
 
         // sort by priority (descending)
-        tasks.sort((a, b) -> b.getPriority() - a.getPriority());
+        tasks.sort((a, b) -> b.getPriority() - a.getPriority());     // This would ideally come from user input or config
 
         int maxTime = 8;
         int currentTime = 0;
