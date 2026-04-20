@@ -1,5 +1,6 @@
 package com.scheduler.config;
 
+import com.scheduler.service.CustomUserDetailsService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.Customizer;
@@ -17,6 +18,13 @@ import org.springframework.security.web.SecurityFilterChain;
 @EnableWebSecurity
 public class SecurityConfig {
 
+    private final CustomUserDetailsService customUserDetailsService;
+
+    public SecurityConfig(CustomUserDetailsService customUserDetailsService) {
+        this.customUserDetailsService = customUserDetailsService;
+
+    }
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http
@@ -25,6 +33,7 @@ public class SecurityConfig {
                         .requestMatchers("/auth/**").permitAll()    // Anyone can access login/register endpoints
                         .anyRequest().authenticated()
                 )
+                .userDetailsService(customUserDetailsService)
                 .httpBasic(Customizer.withDefaults())                         // Everything else requires a config
                 .build();
     }

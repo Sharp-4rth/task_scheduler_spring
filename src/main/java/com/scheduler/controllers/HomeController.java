@@ -15,4 +15,9 @@ public class HomeController {
         headers.add("Location", "/swagger-ui/index.html");
         return ResponseEntity.status(HttpStatus.FOUND).headers(headers).build();
     }
+
+    @GetMapping("/")
+    public String home() {
+        return "App is running";
+    }
 }
