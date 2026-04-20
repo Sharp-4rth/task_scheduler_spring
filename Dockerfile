@@ -6,7 +6,7 @@ WORKDIR /app
 
 COPY . .
 
-RUN mvn -B -DskipTests clean package
+RUN mvn -B -Dmaven.test.skip=true clean package
 
 # Run stage
 
@@ -20,4 +20,4 @@ EXPOSE 8091
 
 ENV PORT=8091
 
-CMD ["sh", "-c", "java -jar app.jar --spring.profiles.active=prod --server. Port=${PORT}"]
+CMD ["sh", "-c", "java -jar app.jar --spring.profiles.active=prod --server.Port=${PORT}"]
