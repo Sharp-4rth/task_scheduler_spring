@@ -31,6 +31,12 @@ public class TaskController {
     }
 
     // get task by name
+    // I guess, call appropriate service method, which looks in the db
+    @Operation(summary= "Get task by name", description = "Retrieve a task by name")
+    @GetMapping("/{name}")
+    public List<TaskDTO> getTaskByName(@PathVariable String name) {
+        return taskService.getTaskByName(name);
+    }
 
     @Operation(summary = "Get specific task", description = "Retrieve a task by id")
     @GetMapping("/{id}")

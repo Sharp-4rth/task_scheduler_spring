@@ -38,6 +38,7 @@ public class TaskService {
         User user = userRepository.findById(dto.getUserId())
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found"));
         task.setStatus(TaskStatus.PENDING);
+
         // Set relationship
         user.addTask(task);
 
@@ -64,6 +65,12 @@ public class TaskService {
                 .toList();
     }
 
+    public List<TaskDTO> getTaskByName(String name) {
+        return taskRepository.findByName(name)
+                .stream()
+                .map(taskMapper::toDTO)
+                .toList();
+    }
 
     public TaskDTO getTaskById(Long id) {
         Task task = taskRepository.findById(id)

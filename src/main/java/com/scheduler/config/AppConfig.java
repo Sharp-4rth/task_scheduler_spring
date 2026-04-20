@@ -36,15 +36,18 @@ public class AppConfig {
 
                 User user1 = new User("Alice");
                 User user2 = new User("Bob");
+                User user3 = new User("Harry");
 
                 userRepository.save(user1);
                 userRepository.save(user2);
 
-                Task t1 = new Task("Task 1", 2, 3, LocalDateTime.now().plusDays(1));
-                Task t2 = new Task("Task 2", 1, 5, LocalDateTime.now().plusDays(2));
+                Task t1 = new Task("Do dishes", 2, 3, LocalDateTime.now().plusDays(1));
+                Task t2 = new Task("Walk the dog", 5, 5, LocalDateTime.now().plusDays(2));
+                Task t3 = new Task("Clean", 5, 5, LocalDateTime.now().plusDays(3));
 
                 user1.addTask(t1);
                 user2.addTask(t2);
+                user3.addTask(t3);
 
                 taskRepository.save(t1);
                 taskRepository.save(t2);
