@@ -4,6 +4,7 @@ import com.scheduler.models.Task;
 import com.scheduler.models.User;
 import com.scheduler.repository.TaskRepository;
 import com.scheduler.repository.UserRepository;
+import com.scheduler.service.UserService;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Info;
 import jakarta.transaction.Transactional;
@@ -27,19 +28,20 @@ public class AppConfig {
 
     @Bean
     @Transactional
-    public CommandLineRunner loadData(UserRepository userRepository, TaskRepository taskRepository) {
+    public CommandLineRunner loadData(UserRepository userRepository, TaskRepository taskRepository, UserService userService) {
         return args -> {
 
             System.out.println("DataLoader running...");
 
             if (userRepository.count() == 0) {
 
-                User user1 = new User("Alice");
-                User user2 = new User("Bob");
-                User user3 = new User("Harry");
+                User user1 = userService.createUser("Alice", "password");
+                User user2 = userService.createUser("Bob", "password");
+                User user3 = userService.createUser("Harry", "password");
 
                 userRepository.save(user1);
                 userRepository.save(user2);
+                userRepository.save(user3);
 
                 Task t1 = new Task("Do dishes", 2, 3, LocalDateTime.now().plusDays(1));
                 Task t2 = new Task("Walk the dog", 5, 5, LocalDateTime.now().plusDays(2));

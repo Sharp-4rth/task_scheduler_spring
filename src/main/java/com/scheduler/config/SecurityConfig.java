@@ -8,6 +8,8 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 
@@ -27,15 +29,20 @@ public class SecurityConfig {
                 .build();
     }
 
-    // Tells spring how to find users and passwords
     @Bean
-    public UserDetailsService userDetailsService() {
-        UserDetails user = User
-                .withUsername("Leonidas")
-                .password("{noop}password")                                   // No password hashing
-                .roles("USER")
-                .build();
-
-        return new InMemoryUserDetailsManager(user);                          // Unrelated to my DB
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
     }
+
+    // Tells spring how to find users and passwords
+//    @Bean
+//    public UserDetailsService userDetailsService() {
+//        UserDetails user = User
+//                .withUsername("Leonidas")
+//                .password("{noop}password")                                   // No password hashing
+//                .roles("USER")
+//                .build();
+//
+//        return new InMemoryUserDetailsManager(user);                          // Unrelated to my DB
+//    }
 }
