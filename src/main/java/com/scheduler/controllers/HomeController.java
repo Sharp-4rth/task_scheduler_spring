@@ -16,6 +16,7 @@ public class HomeController {
         return ResponseEntity.status(HttpStatus.FOUND).headers(headers).build();
     }
 
+
     @GetMapping("/")
     public ResponseEntity<Void> redirect() {
         return ResponseEntity.status(HttpStatus.FOUND)

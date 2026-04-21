@@ -1,0 +1,38 @@
+package com.scheduler.controllers;
+
+import com.scheduler.dtos.TaskDTO;
+import com.scheduler.services.TaskService;
+import org.springframework.security.core.Authentication;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import java.util.List;
+
+@Controller
+@RequestMapping("/tasks")
+public class TaskViewController {
+    private final TaskService taskService;
+
+    public TaskViewController(TaskService taskService) {
+        this.taskService = taskService;
+    }
+
+    @GetMapping("/test")
+    @ResponseBody
+    public String test() {
+        return "works";
+    }
+
+    @GetMapping
+    public String getTasks(Model model, Authentication authentication) {
+        List<TaskDTO> tasks = taskService.getAllTasks();
+        String username = (authentication != null) ? authentication.getName() : "Guest";
+        model.addAttribute("tasks", tasks);
+        model.addAttribute("username", username);
+        return "tasks/index";
+    }
+
+}

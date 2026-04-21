@@ -1,6 +1,5 @@
-package com.scheduler.repository;
+package com.scheduler.repositories;
 
-import com.scheduler.models.Task;
 import com.scheduler.models.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 

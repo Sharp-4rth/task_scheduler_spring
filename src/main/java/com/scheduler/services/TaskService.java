@@ -1,12 +1,12 @@
-package com.scheduler.service;
+package com.scheduler.services;
 
 import com.scheduler.dtos.CreateTaskRequest;
 import com.scheduler.dtos.TaskDTO;
 import com.scheduler.dtos.TaskMapper;
 import com.scheduler.models.Task;
 import com.scheduler.models.User;
-import com.scheduler.repository.TaskRepository;
-import com.scheduler.repository.UserRepository;
+import com.scheduler.repositories.TaskRepository;
+import com.scheduler.repositories.UserRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -97,7 +97,7 @@ public class TaskService {
         // sort by priority (descending)
         tasks.sort((a, b) -> b.getPriority() - a.getPriority());     // This would ideally come from user input or config
 
-        int maxTime = 8;
+        int maxTime = 120;
         int currentTime = 0;
 
         List<Task> scheduledTasks = new ArrayList<>();

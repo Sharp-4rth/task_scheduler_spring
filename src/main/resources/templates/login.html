@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="~{fragments/head :: head}"></head>
+
+<body>
+<div th:replace="~{fragments/navbar :: navbar}"></div>
+<body class="d-flex flex-column min-vh-100">
+<div class="flex-grow-1 d-flex align-items-center">
+  <div class="container" style="max-width: 400px;">
+<div class="container mt-5" style="max-width: 400px;">
+  <div class="card shadow-sm">
+    <div class="card-body">
+
+      <h3 class="text-center mb-4">Login</h3>
+
+      <!-- Error -->
+      <div th:if="${param.error}" class="alert alert-danger">
+        Invalid username or password
+      </div>
+
+      <!-- Logout -->
+      <div th:if="${param.logout}" class="alert alert-success">
+        Logged out successfully
+      </div>
+
+      <form method="post" th:action="@{/login}">
+        <div class="mb-3">
+          <label class="form-label">Username</label>
+          <input type="text" name="username" class="form-control" required>
+        </div>
+
+        <div class="mb-4">
+          <label class="form-label">Password</label>
+          <input type="password" name="password" class="form-control" required>
+        </div>
+
+        <button class="btn btn-primary w-100">
+          Login
+        </button>
+      </form>
+
+    </div>
+  </div>
+</div>
+
+<!-- Footer -->
+
+    <!-- your login card -->
+  </div>
+</div>
+<div th:replace="~{fragments/footer :: footer}"></div>
+</body>
+</body>
+</html>

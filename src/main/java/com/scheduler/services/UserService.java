@@ -1,7 +1,7 @@
-package com.scheduler.service;
+package com.scheduler.services;
 
 import com.scheduler.models.User;
-import com.scheduler.repository.UserRepository;
+import com.scheduler.repositories.UserRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 

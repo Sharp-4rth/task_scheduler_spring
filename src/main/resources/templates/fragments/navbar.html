@@ -1,0 +1,33 @@
+<nav th:fragment="navbar" class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="/tasks">Task Scheduler</a>
+    <div class="collapse navbar-collapse">
+      <ul class="navbar-nav">
+        <li class="nav-item">
+          <a class="nav-link" href="/tasks">My Tasks</a>
+        </li>
+      </ul>
+      <div class="d-flex align-items-center ms-auto">
+          <!-- If NOT logged in -->
+          <a th:if="${#authorization.expression('!isAuthenticated()')}"
+             th:href="@{/login}"
+             class="btn btn-outline-light btn-sm me-2">
+              Login
+          </a>
+          <!-- If logged in -->
+          <span th:if="${#authorization.expression('isAuthenticated()')}"
+                class="text-light me-3"
+                th:text="${#authentication.name}">
+          </span>
+          <form th:if="${#authorization.expression('isAuthenticated()')}"
+                th:action="@{/logout}"
+                method="post"
+                class="d-inline">
+              <button class="btn btn-outline-light btn-sm">
+                  Logout
+              </button>
+          </form>
+      </div>
+    </div>
+  </div>
+</nav>
