@@ -17,7 +17,9 @@ public class HomeController {
     }
 
     @GetMapping("/")
-    public String home() {
-        return "App is running";
+    public ResponseEntity<Void> redirect() {
+        return ResponseEntity.status(HttpStatus.FOUND)
+                .header("Location", "/swagger-ui/index.html")
+                .build();
     }
 }

@@ -5,8 +5,11 @@ import com.scheduler.models.User;
 import com.scheduler.repository.TaskRepository;
 import com.scheduler.repository.UserRepository;
 import com.scheduler.service.UserService;
+import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Info;
+import io.swagger.v3.oas.models.security.SecurityRequirement;
+import io.swagger.v3.oas.models.security.SecurityScheme;
 import jakarta.transaction.Transactional;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
@@ -23,7 +26,16 @@ public class AppConfig {
                 .info(new Info()
                         .title("Task Scheduler API")
                         .version("1.0")
-                        .description("API documentation for the Task Scheduler application"));
+                        .description("API documentation for the Task Scheduler application")
+                )
+                .components(new Components()
+                        .addSecuritySchemes("basicAuth",
+                                new SecurityScheme()
+                                        .type(SecurityScheme.Type.HTTP)
+                                        .scheme("basic")
+                        )
+                )
+                .addSecurityItem(new SecurityRequirement().addList("basicAuth"));
     }
 
     @Bean
@@ -53,6 +65,7 @@ public class AppConfig {
 
                 taskRepository.save(t1);
                 taskRepository.save(t2);
+                taskRepository.save(t3);
 
                 System.out.println("Seed data added");
 

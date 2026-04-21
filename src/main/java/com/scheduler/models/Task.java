@@ -17,7 +17,7 @@ public class Task {
     private LocalDateTime deadline;
 
     @Enumerated(EnumType.STRING)
-    private TaskStatus status;
+    private TaskStatus status = TaskStatus.PENDING;
 
     @ManyToOne       // <--- foreign key
     @JoinColumn(name = "user_id")

@@ -6,7 +6,7 @@ WORKDIR /app
 
 COPY . .
 
-RUN mvn -B -Dmaven.test.skip=true clean package
+RUN mvn -B clean package
 
 # Run stage
 
