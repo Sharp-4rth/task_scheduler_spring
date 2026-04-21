@@ -52,6 +52,6 @@ public class SecurityConfig {
 //                .roles("USER")
 //                .build();
 //
-//        return new InMemoryUserDetailsManager(user);                          // Unrelated to my DB
+//        return new InMemoryUserDetailsManager(user);
 //    }
 }
