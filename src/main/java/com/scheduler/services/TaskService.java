@@ -46,7 +46,6 @@ public class TaskService {
     }
 
     public TaskDTO createTask(CreateTaskRequest dto) {
-
         // DTO → Entity
         Task task = taskMapper.toEntity(dto);
 
@@ -93,72 +92,49 @@ public class TaskService {
     public void updateMaxTime(String username, int maxTime) {
 
         User user = userRepository.findByUsername(username)
-
                 .orElseThrow();
 
         user.setMaxTime(maxTime);
 
         userRepository.save(user);
-
     }
 
+    // query orders them by
     public List<TaskDTO> getTasksForUserOrdered(String username) {
 
         User user = userRepository.findByUsername(username)
-
                 .orElseThrow();
 
         return taskRepository.findByUserOrderByScheduleOrderAsc(user)
-
                 .stream()
-
                 .map(taskMapper::toDTO)
-
                 .toList();
-
     }
 
+    // Assigns order and persists
     public List<TaskDTO> scheduleTasks() {
         User user = getCurrentUser();
-
         List<Task> tasks = new ArrayList<>(user.getTasks());
 
         // sort by priority DESC
-
         tasks.sort((a, b) -> b.getPriority() - a.getPriority());
 
         int maxTime = user.getMaxTime() != null ? user.getMaxTime() : 120;
-
         int currentTime = 0;
-
         int order = 0;
-
         for (Task task : tasks) {
-
             // reset everything first (important)
-
             task.setStatus(TaskStatus.UNSCHEDULED);
-
             task.setScheduleOrder(null);
-
             if (currentTime + task.getDuration() <= maxTime) {
-
                 task.setStatus(TaskStatus.SCHEDULED);
-
                 task.setScheduleOrder(order++);
-
                 currentTime += task.getDuration();
-
             }
-
         }
-
         taskRepository.saveAll(tasks);
-
         return tasks.stream()
-
                 .map(taskMapper::toDTO)
-
                 .toList();
     }
 }

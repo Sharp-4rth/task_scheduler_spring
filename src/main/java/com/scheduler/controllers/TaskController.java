@@ -32,8 +32,6 @@ public class TaskController {
         return taskService.getAllTasks();
     }
 
-    // get task by name
-    // I guess, call appropriate service method, which looks in the db
     @Operation(summary= "Get task by name", description = "Retrieve a task by name")
     @GetMapping("/{name}")
     public List<TaskDTO> getTaskByName(@PathVariable String name) {
@@ -51,5 +49,4 @@ public class TaskController {
     public List<TaskDTO> scheduleTasks() {       // No need for input uses existing tasks
         return taskService.scheduleTasks();
     }
-
 }

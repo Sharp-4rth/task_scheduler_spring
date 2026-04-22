@@ -8,7 +8,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.List;
 
@@ -22,19 +21,13 @@ public class TaskViewController {
     }
 
     @GetMapping
-
     public String getTasks(Model model, Authentication authentication) {
-
         String username = authentication.getName();
-
         List<TaskDTO> tasks = taskService.getTasksForUserOrdered(username);
 
         model.addAttribute("tasks", tasks);
-
         model.addAttribute("username", username);
-
         return "tasks/index";
-
     }
 
     @PostMapping("/schedule")
@@ -42,6 +35,5 @@ public class TaskViewController {
         taskService.scheduleTasks();
         return "redirect:/tasks";
     }
-
 }
 

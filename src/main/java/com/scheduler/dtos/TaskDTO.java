@@ -22,7 +22,6 @@ public class TaskDTO {
         this.status = status;
     }
 
-
     public Long getId() {
         return id;
     }

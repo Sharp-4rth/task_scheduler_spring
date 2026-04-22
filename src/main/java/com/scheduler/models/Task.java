@@ -15,17 +15,17 @@ public class Task {
     private int duration;
     private int priority;
     private LocalDateTime deadline;
+
     @Column(name = "schedule_order")
     private Integer scheduleOrder;
 
     @Enumerated(EnumType.STRING)
-    private TaskStatus status = TaskStatus.PENDING;
+    private TaskStatus status = TaskStatus.UNSCHEDULED;
 
-    @ManyToOne       // <--- foreign key
+    @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
 
-    // Empty, Spring/ JPA creates objects behind the scenes
     public Task() {}
 
     public Task(String name, int duration, int priority, LocalDateTime deadline) {
@@ -33,15 +33,15 @@ public class Task {
         this.duration = duration;
         this.priority = priority;
         this.deadline = deadline;
-        this.status = TaskStatus.PENDING;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
+        this.status = TaskStatus.UNSCHEDULED;
     }
 
     public User getUser() {
         return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public Long getId() {

@@ -13,11 +13,4 @@ public class UserController {
     public UserController(TaskService taskService) {
         this.taskService = taskService;
     }
-
-
-//    @Operation(summary = "Get tasks of user", description = "Retrieve list of tasks that belong to specific user")
-//    @GetMapping("/{userId}/tasks")
-//    public List<TaskDTO> getTasksByUser(@PathVariable Long userId) {
-//        return taskService.getTasksByUser(userId);
-//    }
 }

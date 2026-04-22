@@ -139,12 +139,7 @@ class TaskServiceTest {
 
         // Act & Assert
         assertThrows(ResponseStatusException.class, () -> {
-            sut.getTaskById(taskId); // adjust method name if needed
+            sut.getTaskById(taskId);
         });
     }
-
-//    @Test
-//    void shouldScheduleTasksWithinTimeLimit() {
-//
-//    }
 }

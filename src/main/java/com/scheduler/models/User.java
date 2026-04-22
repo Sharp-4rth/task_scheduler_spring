@@ -12,14 +12,19 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     @Column(unique = true, nullable = false)
     private String username;
     private String password;
+
     @OneToMany(
             mappedBy = "user",
             cascade = CascadeType.ALL
     )
     private List<Task> tasks = new ArrayList<>();
+
+    @Column(name = "max_time")
+    private Integer maxTime;
 
     public User() {}
 
@@ -30,10 +35,6 @@ public class User {
     public User(String username) {
         this.username = username;
     }
-
-    @Column(name = "max_time")
-
-    private Integer maxTime;
 
     public void addTask(Task task) {
         tasks.add(task);

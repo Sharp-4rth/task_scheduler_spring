@@ -8,13 +8,11 @@
         </li>
       </ul>
       <div class="d-flex align-items-center ms-auto">
-          <!-- If NOT logged in -->
           <a th:if="${#authorization.expression('!isAuthenticated()')}"
              th:href="@{/login}"
              class="btn btn-outline-light btn-sm me-2">
               Login
           </a>
-          <!-- If logged in -->
           <span th:if="${#authorization.expression('isAuthenticated()')}"
                 class="text-light me-3"
                 th:text="${#authentication.name}">
