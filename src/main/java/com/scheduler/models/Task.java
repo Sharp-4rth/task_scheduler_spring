@@ -15,6 +15,8 @@ public class Task {
     private int duration;
     private int priority;
     private LocalDateTime deadline;
+    @Column(name = "schedule_order")
+    private Integer scheduleOrder;
 
     @Enumerated(EnumType.STRING)
     private TaskStatus status = TaskStatus.PENDING;
@@ -88,5 +90,9 @@ public class Task {
 
     public void setStatus(TaskStatus status) {
         this.status = status;
+    }
+
+    public void setScheduleOrder(Integer scheduleOrder) {
+        this.scheduleOrder = scheduleOrder;
     }
 }

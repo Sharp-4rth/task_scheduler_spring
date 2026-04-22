@@ -31,6 +31,10 @@ public class User {
         this.username = username;
     }
 
+    @Column(name = "max_time")
+
+    private Integer maxTime;
+
     public void addTask(Task task) {
         tasks.add(task);
         task.setUser(this);
@@ -60,6 +64,14 @@ public class User {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public Integer getMaxTime() {
+        return maxTime;
+    }
+
+    public void setMaxTime(Integer maxTime) {
+        this.maxTime = maxTime;
     }
 }
 

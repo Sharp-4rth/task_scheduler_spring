@@ -6,6 +6,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -20,19 +21,27 @@ public class TaskViewController {
         this.taskService = taskService;
     }
 
-    @GetMapping("/test")
-    @ResponseBody
-    public String test() {
-        return "works";
+    @GetMapping
+
+    public String getTasks(Model model, Authentication authentication) {
+
+        String username = authentication.getName();
+
+        List<TaskDTO> tasks = taskService.getTasksForUserOrdered(username);
+
+        model.addAttribute("tasks", tasks);
+
+        model.addAttribute("username", username);
+
+        return "tasks/index";
+
     }
 
-    @GetMapping
-    public String getTasks(Model model, Authentication authentication) {
-        List<TaskDTO> tasks = taskService.getAllTasks();
-        String username = (authentication != null) ? authentication.getName() : "Guest";
-        model.addAttribute("tasks", tasks);
-        model.addAttribute("username", username);
-        return "tasks/index";
+    @PostMapping("/schedule")
+    public String scheduleTasks() {
+        taskService.scheduleTasks();
+        return "redirect:/tasks";
     }
 
 }
+
