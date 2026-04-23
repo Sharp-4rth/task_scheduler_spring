@@ -99,7 +99,6 @@ public class TaskService {
         userRepository.save(user);
     }
 
-    // query orders them by
     public List<TaskDTO> getTasksForUserOrdered(String username) {
 
         User user = userRepository.findByUsername(username)

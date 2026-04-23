@@ -32,7 +32,7 @@ public class TaskController {
         return taskService.getAllTasks();
     }
 
-    @Operation(summary= "Get task by name", description = "Retrieve a task by name")
+    @Operation(summary = "Get task by name", description = "Retrieve a task by name")
     @GetMapping("/{name}")
     public List<TaskDTO> getTaskByName(@PathVariable String name) {
         return taskService.getTaskByName(name);
